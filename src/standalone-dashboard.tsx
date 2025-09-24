@@ -25,6 +25,9 @@ import {
   Building2
 } from "lucide-react";
 
+// Função utilitária para combinar classes CSS
+const cn = (...classes) => classes.filter(Boolean).join(' ');
+
 // ============================================================================
 // DEPENDÊNCIAS NECESSÁRIAS PARA USAR EM OUTRO PROJETO:
 // ============================================================================
@@ -111,8 +114,6 @@ const Button = ({ children, variant = "default", size = "default", className = "
   );
 };
 
-// Utility function
-const cn = (...classes) => classes.filter(Boolean).join(' ');
 */
 
 // ============================================================================
@@ -184,8 +185,6 @@ const Button = ({ children, variant = "default", size = "default", className = "
     </button>
   );
 };
-
-const cn = (...classes) => classes.filter(Boolean).join(' ');
 
 // ============================================================================
 // COMPONENTE DE MÉTRICAS
@@ -455,16 +454,16 @@ const StandaloneDashboard = ({
   const data = isPersonal ? mockData.personal : mockData.business;
 
   return (
-    <div className={`w-full space-y-6 p-6 bg-background ${className}`}>
+    <div className={`w-full max-w-7xl mx-auto space-y-8 p-4 sm:p-6 lg:p-8 bg-background ${className}`}>
       {/* Toggle de Modo (Opcional) */}
       {showModeToggle && (
-        <div className="flex justify-center mb-8">
-          <div className="flex items-center gap-2 p-1 bg-muted rounded-lg">
+        <div className="flex justify-center mb-6">
+          <div className="flex items-center gap-1 p-1 bg-muted rounded-lg shadow-sm">
             <Button
               variant={currentMode === 'business' ? 'default' : 'ghost'}
               size="sm"
               onClick={() => setCurrentMode('business')}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 px-4 py-2"
             >
               <Building2 className="h-4 w-4" />
               Negócios
@@ -473,7 +472,7 @@ const StandaloneDashboard = ({
               variant={currentMode === 'personal' ? 'default' : 'ghost'}
               size="sm"
               onClick={() => setCurrentMode('personal')}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 px-4 py-2"
             >
               <User className="h-4 w-4" />
               Pessoal
@@ -483,36 +482,38 @@ const StandaloneDashboard = ({
       )}
 
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight text-foreground">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-center sm:text-left">
+        <div className="space-y-2">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             {currentMode === 'business' ? 'Dashboard Empresarial' : 'Dashboard Pessoal'}
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-sm sm:text-base">
             {currentMode === 'business' 
               ? 'Visão geral do desempenho do seu negócio' 
               : 'Acompanhe suas finanças pessoais'
             }
           </p>
         </div>
-        <Badge variant="outline" className="px-3 py-1 bg-primary/10 text-primary border-primary/20">
-          <TrendingUp className="w-4 h-4 mr-2" />
-          {currentMode === 'business' ? 'Negócios' : 'Pessoal'}
-        </Badge>
+        <div className="flex justify-center sm:justify-end">
+          <Badge variant="outline" className="px-3 py-1 bg-primary/10 text-primary border-primary/20">
+            <TrendingUp className="w-4 h-4 mr-2" />
+            {currentMode === 'business' ? 'Negócios' : 'Pessoal'}
+          </Badge>
+        </div>
       </div>
       
       {/* Card de Resumo */}
       <Card className={cn(
-        "border-200",
+        "border-200 shadow-sm",
         isPersonal 
           ? "bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200"
           : "bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200"
       )}>
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <CardContent className="p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
               <div className={cn(
-                "w-12 h-12 rounded-lg flex items-center justify-center",
+                "w-12 h-12 rounded-lg flex items-center justify-center mx-auto sm:mx-0",
                 isPersonal ? "bg-purple-500" : "bg-blue-500"
               )}>
                 {isPersonal ? (
@@ -521,24 +522,26 @@ const StandaloneDashboard = ({
                   <Building className="h-6 w-6 text-white" />
                 )}
               </div>
-              <div>
-                <h2 className="text-lg font-semibold">
+              <div className="text-center sm:text-left">
+                <h2 className="text-base sm:text-lg font-semibold">
                   {isPersonal 
                     ? 'Resumo Financeiro Pessoal: Janeiro/2025'
                     : 'Resumo Financeiro Empresarial: Janeiro/2025'
                   }
                 </h2>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   Período: 01/01/2025 - 31/01/2025
                 </p>
               </div>
             </div>
-            <Badge 
-              variant="secondary" 
-              className="bg-green-100 text-green-800"
-            >
-              {isPersonal ? 'Economia Positiva' : 'Saldo Positivo'}
-            </Badge>
+            <div className="flex justify-center sm:justify-end">
+              <Badge 
+                variant="secondary" 
+                className="bg-green-100 text-green-800 text-xs sm:text-sm"
+              >
+                {isPersonal ? 'Economia Positiva' : 'Saldo Positivo'}
+              </Badge>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -547,47 +550,51 @@ const StandaloneDashboard = ({
       <MetricCards mode={currentMode} />
 
       {/* Gráfico Simples */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <SimpleChart 
-          title={isPersonal ? "Gastos por Categoria" : "Receitas Mensais"}
-          data={data.chartData}
-        />
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        <div className="order-2 xl:order-1">
+          <SimpleChart 
+            title={isPersonal ? "Gastos por Categoria" : "Receitas Mensais"}
+            data={data.chartData}
+          />
+        </div>
         
         {/* Card de Estatísticas Rápidas */}
-        <Card className="bg-card border-border">
-          <CardHeader>
-            <CardTitle className="text-foreground">Estatísticas Rápidas</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between p-3 bg-primary/10 rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                  <TrendingUp className="h-4 w-4 text-primary-foreground" />
+        <div className="order-1 xl:order-2">
+          <Card className="bg-card border-border shadow-sm h-full">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-foreground text-lg">Estatísticas Rápidas</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 bg-primary/10 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                    <TrendingUp className="h-4 w-4 text-primary-foreground" />
+                  </div>
+                  <span className="text-foreground font-medium text-sm sm:text-base">
+                    {isPersonal ? 'Meta de Economia' : 'Crescimento Mensal'}
+                  </span>
                 </div>
-                <span className="text-foreground font-medium">
-                  {isPersonal ? 'Meta de Economia' : 'Crescimento Mensal'}
+                <span className="text-primary font-bold text-lg text-center sm:text-right">
+                  {isPersonal ? '85%' : '+12.5%'}
                 </span>
               </div>
-              <span className="text-primary font-bold">
-                {isPersonal ? '85%' : '+12.5%'}
-              </span>
-            </div>
-            
-            <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-muted-foreground rounded-full flex items-center justify-center">
-                  <Target className="h-4 w-4 text-background" />
+              
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 bg-muted rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-muted-foreground rounded-full flex items-center justify-center flex-shrink-0">
+                    <Target className="h-4 w-4 text-background" />
+                  </div>
+                  <span className="text-foreground font-medium text-sm sm:text-base">
+                    {isPersonal ? 'Próxima Meta' : 'Próximo Objetivo'}
+                  </span>
                 </div>
-                <span className="text-foreground font-medium">
-                  {isPersonal ? 'Próxima Meta' : 'Próximo Objetivo'}
+                <span className="text-muted-foreground font-bold text-lg text-center sm:text-right">
+                  {isPersonal ? 'R$ 15.000' : 'R$ 75.000'}
                 </span>
               </div>
-              <span className="text-muted-foreground font-bold">
-                {isPersonal ? 'R$ 15.000' : 'R$ 75.000'}
-              </span>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

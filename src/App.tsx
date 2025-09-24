@@ -14,6 +14,8 @@ import {
   Target,
   Zap
 } from 'lucide-react';
+import StandaloneDashboard from './standalone-dashboard';
+
 
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -411,10 +413,10 @@ function App() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-tight">
-                Dashboard financeiro para <span className="text-orange-500">autônomos</span> e importadores
+                Controle Financeiro Inteligente para <span className="text-orange-500">Autônomos</span> e Importadores
               </h1>
               <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                Controle total das suas vendas, importações e receitas. Dashboard inteligente para quem trabalha por conta própria e precisa de organização financeira profissional.
+                Visualize e organize suas finanças em um só painel, com informações essenciais para autônomos e importadores em tempo real.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <button className="bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-all transform hover:scale-105 flex items-center justify-center">
@@ -740,6 +742,63 @@ function App() {
               </div>
             </div>
           </div>
+      </section>
+
+      {/* Dashboard Preview Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-4xl font-bold text-slate-800 mb-6">
+              Visualize suas Finanças em <span className="text-orange-500">Tempo Real</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Dashboard inteligente que se adapta ao seu perfil - seja pessoal ou empresarial. 
+              Acompanhe métricas essenciais e tome decisões baseadas em dados.
+            </p>
+          </div>
+
+          {/* Dashboard Component */}
+          <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
+            <StandaloneDashboard 
+              mode="business" 
+              showModeToggle={true}
+              className="min-h-[600px]"
+            />
+          </div>
+
+          {/* Dashboard Features */}
+          <div className="grid md:grid-cols-3 gap-8 mt-16">
+            <div className="text-center">
+              <div className="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <BarChart3 className="h-8 w-8 text-orange-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-slate-800 mb-3">Métricas em Tempo Real</h3>
+              <p className="text-gray-600">
+                Acompanhe receitas, despesas e saldo atualizado automaticamente conforme suas transações.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="bg-cyan-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Building2 className="h-8 w-8 text-cyan-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-slate-800 mb-3">Modo Duplo</h3>
+              <p className="text-gray-600">
+                Alterne entre visão pessoal e empresarial com um clique. Cada modo com métricas específicas.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <TrendingUp className="h-8 w-8 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-slate-800 mb-3">Análise Inteligente</h3>
+              <p className="text-gray-600">
+                Gráficos e indicadores que transformam seus números em insights acionáveis para crescer.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Benefits Section */}
