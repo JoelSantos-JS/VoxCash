@@ -14,6 +14,18 @@ import {
   Target,
   Zap
 } from 'lucide-react';
+
+// Ícone customizado em formato de V
+const VIcon = ({ className }: { className?: string }) => (
+  <svg 
+    className={className} 
+    viewBox="0 0 24 24" 
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M3 4L12 20L21 4H17L12 14L7 4H3Z" />
+  </svg>
+);
 import StandaloneDashboard from './standalone-dashboard';
 import bankaiVideo from '../video/BANKAI.mp4';
 
@@ -26,7 +38,7 @@ const PhoneDemo: React.FC = () => {
     const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
   }, []);
-  const container: React.CSSProperties = { position: 'relative', width: 360, height: 720, background: '#1a1a1a', borderRadius: 40, padding: 15, boxShadow: '0 20px 60px rgba(0,0,0,0.5)' };
+  const container: React.CSSProperties = { position: 'relative', width: '100%', maxWidth: 360, aspectRatio: '9 / 19.5', background: '#1a1a1a', borderRadius: 40, padding: 15, boxShadow: '0 20px 60px rgba(0,0,0,0.5)', margin: '0 auto' };
   const screen: React.CSSProperties = { position: 'relative', width: '100%', height: '100%', background: '#000', borderRadius: 30, overflow: 'hidden' };
   const videoStyle: React.CSSProperties = { width: '100%', height: '100%', objectFit: 'cover' };
   const timeStyle: React.CSSProperties = { position: 'absolute', top: 45, left: 20, color: '#fff', fontSize: 14, fontWeight: 700, zIndex: 5, textShadow: '0 2px 4px rgba(0,0,0,0.5)' };
@@ -402,7 +414,7 @@ function App() {
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-2">
               <div className="bg-slate-800 p-2 rounded-lg">
-                <TrendingUp className="h-6 w-6 text-white" />
+                <VIcon className="h-6 w-6 text-white" />
               </div>
               <span className="text-xl font-bold text-slate-800">VoxCash</span>
             </div>
@@ -416,9 +428,14 @@ function App() {
 
             <div className="hidden md:flex items-center space-x-4">
               <button className="text-slate-600 hover:text-slate-800 transition-colors">Login</button>
-              <button className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors">
-                Começar Agora
-              </button>
+              <a 
+                href="https://pay.cakto.com.br/6cq7seh_634092"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors"
+              >
+                Assinar Agora
+              </a>
             </div>
 
             <button 
@@ -430,20 +447,25 @@ function App() {
           </div>
 
           {/* Mobile Menu */}
-          {mobileMenuOpen && (
-            <div className="md:hidden py-4 border-t border-gray-200">
-              <div className="space-y-4">
-                <a href="#features" className="block text-slate-600">Funcionalidades</a>
-                <a href="#pricing" className="block text-slate-600">Preços</a>
-                <a href="#testimonials" className="block text-slate-600">Depoimentos</a>
-                <a href="#faq" className="block text-slate-600">FAQ</a>
-                <button className="w-full text-left text-slate-600">Login</button>
-                <button className="w-full bg-orange-500 text-white px-6 py-2 rounded-lg">
-                  Começar Agora
-                </button>
-              </div>
-            </div>
-          )}
+              {mobileMenuOpen && (
+                <div className="md:hidden py-4 border-t border-gray-200">
+                  <div className="space-y-4">
+                    <a href="#features" className="block text-slate-600">Funcionalidades</a>
+                    <a href="#pricing" className="block text-slate-600">Preços</a>
+                    <a href="#testimonials" className="block text-slate-600">Depoimentos</a>
+                    <a href="#faq" className="block text-slate-600">FAQ</a>
+                    <button className="w-full text-left text-slate-600">Login</button>
+                    <a 
+                      href="https://pay.cakto.com.br/6cq7seh_634092"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full bg-orange-500 text-white px-6 py-2 rounded-lg block text-center"
+                    >
+                      Assinar Agora
+                    </a>
+                  </div>
+                </div>
+              )}
         </div>
       </header>
 
@@ -459,10 +481,15 @@ function App() {
                 Visualize e organize suas finanças em um só painel, com informações essenciais para autônomos e importadores em tempo real.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-all transform hover:scale-105 flex items-center justify-center">
-                  Comece agora mesmo
+                <a 
+                  href="https://pay.cakto.com.br/6cq7seh_634092"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-all transform hover:scale-105 flex items-center justify-center"
+                >
+                  Assine Agora
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </button>
+                </a>
                 <button className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-slate-800 transition-all">
                   Ver demonstração
                 </button>
@@ -816,7 +843,7 @@ function App() {
               Planos que se adaptam ao seu crescimento
             </h2>
             <p className="text-xl text-gray-600">
-              Escolha o plano ideal para suas necessidades
+              Escolha o plano ideal para o seu negócio
             </p>
           </div>
 
@@ -849,13 +876,12 @@ function App() {
                 Experimentar por 5 dias
               </a>
             </div>
-
             {/* Plano Básico */}
             <div className={`bg-white border-2 rounded-2xl p-8 hover:shadow-lg transition-all ${selectedPlan === 'basic' ? 'border-orange-500 shadow-lg' : 'border-gray-200'}`}>
               <div className="text-center mb-8">
                 <h3 className="text-2xl font-bold text-slate-800 mb-2">Plano Básico</h3>
                 <div className="text-4xl font-bold text-slate-800 mb-2">
-                  R$ 19<span className="text-lg text-gray-600">,90/mês</span>
+                  R$ 19<span className="text-lg text-gray-600">,00/mês</span>
                 </div>
                 <p className="text-gray-600">Ideal para autônomos iniciantes</p>
               </div>
@@ -889,7 +915,7 @@ function App() {
                 rel="noopener noreferrer"
                 className="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors block text-center"
               >
-                Escolher Básico
+                Assine Agora
               </a>
             </div>
 
@@ -942,7 +968,7 @@ function App() {
                 rel="noopener noreferrer"
                 className="w-full bg-cyan-500 text-white py-3 rounded-lg font-semibold hover:bg-cyan-600 transition-colors block text-center"
               >
-                Escolher Premium
+                Assinar Plano Premium
               </a>
             </div>
             
@@ -1043,11 +1069,11 @@ function App() {
           <div className="space-y-6">
             <div className="border border-gray-200 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-slate-800 mb-3">
-                Como funciona a assinatura?
+                Como posso começar a usar o VoxCash?
               </h3>
               <p className="text-gray-600">
-                Você escolhe o plano que melhor se adapta às suas necessidades e tem acesso completo a todas as funcionalidades. 
-                Você pode cancelar a qualquer momento.
+                Você pode escolher entre nossos dois planos: Básico (R$ 19,00/mês) ou Premium (R$ 27,00/mês). 
+                Basta clicar no plano desejado e fazer sua assinatura para começar imediatamente.
               </p>
             </div>
 
@@ -1116,31 +1142,26 @@ function App() {
           
           <div className="bg-white rounded-2xl p-8 shadow-2xl max-w-md mx-auto">
             <h3 className="text-2xl font-bold text-slate-800 mb-6">
-              Comece Agora!
+              Escolha seu Plano
             </h3>
-            <form className="space-y-4">
-              <input 
-                type="text" 
-                placeholder="Seu nome completo"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-orange-500 focus:ring focus:ring-orange-200 text-slate-800"
-              />
-              <input 
-                type="email" 
-                placeholder="Seu melhor e-mail"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-orange-500 focus:ring focus:ring-orange-200 text-slate-800"
-              />
-              <input 
-                type="tel" 
-                placeholder="Seu WhatsApp (opcional)"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-orange-500 focus:ring focus:ring-orange-200 text-slate-800"
-              />
-              <button 
-                type="submit"
-                className="w-full bg-orange-500 text-white py-4 rounded-lg font-bold text-lg hover:bg-orange-600 transition-colors"
+            <div className="space-y-4">
+              <a 
+                href="https://pay.cakto.com.br/6cq7seh_634092"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full bg-orange-500 text-white py-4 rounded-lg font-bold text-lg hover:bg-orange-600 transition-colors block text-center"
               >
-                Escolher Meu Plano
-              </button>
-            </form>
+                Plano Básico - R$ 19,00/mês
+              </a>
+              <a 
+                href="https://pay.cakto.com.br/tbbbzbh"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full bg-cyan-500 text-white py-4 rounded-lg font-bold text-lg hover:bg-cyan-600 transition-colors block text-center"
+              >
+                Plano Premium - R$ 27,00/mês
+              </a>
+            </div>
             <p className="text-gray-600 text-sm mt-4">
               ✓ Sem compromisso ✓ Cancele quando quiser ✓ Suporte completo
             </p>
@@ -1155,7 +1176,7 @@ function App() {
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <div className="bg-orange-500 p-2 rounded-lg">
-                  <TrendingUp className="h-6 w-6 text-white" />
+                  <VIcon className="h-6 w-6 text-white" />
                 </div>
                 <span className="text-xl font-bold">VoxCash</span>
               </div>
