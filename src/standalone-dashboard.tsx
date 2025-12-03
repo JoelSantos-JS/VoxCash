@@ -7,26 +7,57 @@ import {
   TrendingDown, 
   PiggyBank, 
   Target, 
-  Package, 
-  ShoppingCart,
-  AlertTriangle,
   ArrowUp,
   ArrowDown,
   Building,
   User,
   BarChart3,
-  Wallet,
-  CreditCard,
-  Home,
-  Car,
-  ShoppingBag,
-  Heart,
-  Gamepad2,
   Building2
 } from "lucide-react";
 
+// Tipos TypeScript
+interface ChartDataItem {
+  name: string;
+  value: number;
+}
+
+interface MetricData {
+  value: number;
+  trend: number;
+  label: string;
+}
+
+interface BusinessData {
+  revenue: MetricData;
+  expenses: MetricData;
+  balance: MetricData;
+  health: MetricData;
+}
+
+interface PersonalData {
+  income: MetricData;
+  expenses: MetricData;
+  savings: MetricData;
+  rate: MetricData;
+}
+
+interface SimpleChartProps {
+  title: string;
+  data: ChartDataItem[];
+}
+
+interface MetricCardsProps {
+  mode?: 'business' | 'personal';
+}
+
+interface StandaloneDashboardProps {
+  mode?: 'business' | 'personal';
+  showModeToggle?: boolean;
+  className?: string;
+}
+
 // Função utilitária para combinar classes CSS
-const cn = (...classes) => classes.filter(Boolean).join(' ');
+const cn = (...classes: (string | undefined | null | false)[]): string => classes.filter(Boolean).join(' ');
 
 // ============================================================================
 // DEPENDÊNCIAS NECESSÁRIAS PARA USAR EM OUTRO PROJETO:
@@ -120,31 +151,49 @@ const Button = ({ children, variant = "default", size = "default", className = "
 // COMPONENTES UI BÁSICOS (inclua estes ou use sua biblioteca de componentes)
 // ============================================================================
 
-const Card = ({ children, className = "" }) => (
+interface CardProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+interface BadgeProps {
+  children: React.ReactNode;
+  variant?: 'default' | 'secondary' | 'outline';
+  className?: string;
+}
+
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode;
+  variant?: 'default' | 'ghost';
+  size?: 'default' | 'sm';
+  className?: string;
+}
+
+const Card: React.FC<CardProps> = ({ children, className = "" }) => (
   <div className={`rounded-lg border bg-card text-card-foreground shadow-sm ${className}`}>
     {children}
   </div>
 );
 
-const CardHeader = ({ children, className = "" }) => (
+const CardHeader: React.FC<CardProps> = ({ children, className = "" }) => (
   <div className={`flex flex-col space-y-1.5 p-6 ${className}`}>
     {children}
   </div>
 );
 
-const CardTitle = ({ children, className = "" }) => (
+const CardTitle: React.FC<CardProps> = ({ children, className = "" }) => (
   <h3 className={`text-2xl font-semibold leading-none tracking-tight ${className}`}>
     {children}
   </h3>
 );
 
-const CardContent = ({ children, className = "" }) => (
+const CardContent: React.FC<CardProps> = ({ children, className = "" }) => (
   <div className={`p-6 pt-0 ${className}`}>
     {children}
   </div>
 );
 
-const Badge = ({ children, variant = "default", className = "" }) => {
+const Badge: React.FC<BadgeProps> = ({ children, variant = "default", className = "" }) => {
   const variants = {
     default: "bg-primary text-primary-foreground",
     secondary: "bg-secondary text-secondary-foreground",
@@ -157,16 +206,7 @@ const Badge = ({ children, variant = "default", className = "" }) => {
   );
 };
 
-const Progress = ({ value, className = "" }) => (
-  <div className={`relative h-4 w-full overflow-hidden rounded-full bg-secondary ${className}`}>
-    <div 
-      className="h-full w-full flex-1 bg-primary transition-all"
-      style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
-    />
-  </div>
-);
-
-const Button = ({ children, variant = "default", size = "default", className = "", onClick, ...props }) => {
+const Button: React.FC<ButtonProps> = ({ children, variant = "default", size = "default", className = "", onClick, ...props }) => {
   const variants = {
     default: "bg-primary text-primary-foreground hover:bg-primary/90",
     ghost: "hover:bg-accent hover:text-accent-foreground"
@@ -190,18 +230,18 @@ const Button = ({ children, variant = "default", size = "default", className = "
 // COMPONENTE DE MÉTRICAS
 // ============================================================================
 
-const MetricCards = ({ mode = 'business' }) => {
+const MetricCards: React.FC<MetricCardsProps> = ({ mode = 'business' }) => {
   const isPersonal = mode === 'personal';
 
   // Dados mockados
-  const businessData = {
+  const businessData: BusinessData = {
     revenue: { value: 45750.00, trend: 12.5, label: "Receitas no período" },
     expenses: { value: 28340.50, trend: -8.2, label: "Despesas no período" },
     balance: { value: 17409.50, trend: 38.0, label: "Saldo do período" },
     health: { value: 85, trend: 5.2, label: "Saúde Financeira" }
   };
 
-  const personalData = {
+  const personalData: PersonalData = {
     income: { value: 8500.00, trend: 0, label: "Renda do Mês" },
     expenses: { value: 6200.00, trend: -5.3, label: "Gastos do Mês" },
     savings: { value: 2300.00, trend: 15.2, label: "Economia do Mês" },
@@ -258,7 +298,7 @@ const MetricCards = ({ mode = 'business' }) => {
           </CardHeader>
           <CardContent>
             <div className={`text-2xl font-bold ${colorClasses.green.value}`}>
-              {data.income.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+              {('income' in data) && data.income.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
             </div>
             <p className="text-xs text-muted-foreground">Salário + extras</p>
           </CardContent>
@@ -289,11 +329,11 @@ const MetricCards = ({ mode = 'business' }) => {
           </CardHeader>
           <CardContent>
             <div className={`text-2xl font-bold ${colorClasses.blue.value}`}>
-              {data.savings.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+              {('savings' in data) && data.savings.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
             </div>
             <div className="flex items-center text-xs">
               <ArrowUp className={`h-3 w-3 mr-1 ${colorClasses.blue.trend}`} />
-              <span className={colorClasses.blue.trend}>+{data.savings.trend}% vs mês anterior</span>
+              <span className={colorClasses.blue.trend}>+{('savings' in data) && data.savings.trend}% vs mês anterior</span>
             </div>
           </CardContent>
         </Card>
@@ -306,11 +346,11 @@ const MetricCards = ({ mode = 'business' }) => {
           </CardHeader>
           <CardContent>
             <div className={`text-2xl font-bold ${colorClasses.purple.value}`}>
-              {data.rate.value}%
+              {('rate' in data) && data.rate.value}%
             </div>
             <div className="flex items-center text-xs">
               <ArrowUp className={`h-3 w-3 mr-1 ${colorClasses.purple.trend}`} />
-              <span className={colorClasses.purple.trend}>+{data.rate.trend}% vs mês anterior</span>
+              <span className={colorClasses.purple.trend}>+{('rate' in data) && data.rate.trend}% vs mês anterior</span>
             </div>
           </CardContent>
         </Card>
@@ -329,11 +369,11 @@ const MetricCards = ({ mode = 'business' }) => {
         </CardHeader>
         <CardContent>
           <div className={`text-2xl font-bold ${colorClasses.green.value}`}>
-            {data.revenue.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+            {('revenue' in data) && data.revenue.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
           </div>
           <div className="flex items-center text-xs">
             <ArrowUp className={`h-3 w-3 mr-1 ${colorClasses.green.trend}`} />
-            <span className={colorClasses.green.trend}>+{data.revenue.trend}% vs mês anterior</span>
+            <span className={colorClasses.green.trend}>+{('revenue' in data) && data.revenue.trend}% vs mês anterior</span>
           </div>
         </CardContent>
       </Card>
@@ -363,11 +403,11 @@ const MetricCards = ({ mode = 'business' }) => {
         </CardHeader>
         <CardContent>
           <div className={`text-2xl font-bold ${colorClasses.blue.value}`}>
-            {data.balance.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+            {('balance' in data) && data.balance.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
           </div>
           <div className="flex items-center text-xs">
             <ArrowUp className={`h-3 w-3 mr-1 ${colorClasses.blue.trend}`} />
-            <span className={colorClasses.blue.trend}>+{data.balance.trend}% vs mês anterior</span>
+            <span className={colorClasses.blue.trend}>+{('balance' in data) && data.balance.trend}% vs mês anterior</span>
           </div>
         </CardContent>
       </Card>
@@ -380,7 +420,7 @@ const MetricCards = ({ mode = 'business' }) => {
         </CardHeader>
         <CardContent>
           <div className={`text-2xl font-bold ${colorClasses.purple.value}`}>
-            {data.health.value}%
+            {('health' in data) && data.health.value}%
           </div>
           <div className="flex items-center text-xs">
             <span className={colorClasses.purple.trend}>Excelente</span>
@@ -395,7 +435,7 @@ const MetricCards = ({ mode = 'business' }) => {
 // COMPONENTE DE GRÁFICOS (versão simplificada sem Recharts)
 // ============================================================================
 
-const SimpleChart = ({ title, data, type = "bar" }) => (
+const SimpleChart: React.FC<SimpleChartProps> = ({ title, data }) => (
   <Card className="bg-card border-border">
     <CardHeader>
       <CardTitle className="text-foreground">{title}</CardTitle>
@@ -423,12 +463,12 @@ const SimpleChart = ({ title, data, type = "bar" }) => (
 // COMPONENTE PRINCIPAL DO DASHBOARD
 // ============================================================================
 
-const StandaloneDashboard = ({ 
+const StandaloneDashboard: React.FC<StandaloneDashboardProps> = ({ 
   mode = 'business',
   showModeToggle = true,
   className = ""
 }) => {
-  const [currentMode, setCurrentMode] = useState(mode);
+  const [currentMode, setCurrentMode] = useState<'business' | 'personal'>(mode);
   const isPersonal = currentMode === 'personal';
 
   // Dados mockados para demonstração

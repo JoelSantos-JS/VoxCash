@@ -15,11 +15,42 @@ import {
   Zap
 } from 'lucide-react';
 import StandaloneDashboard from './standalone-dashboard';
+import bankaiVideo from '../video/BANKAI.mp4';
+
+
+const PhoneDemo: React.FC = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [time, setTime] = useState(new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }));
+  useEffect(() => {
+    const update = () => setTime(new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }));
+    const interval = setInterval(update, 1000);
+    return () => clearInterval(interval);
+  }, []);
+  const container: React.CSSProperties = { position: 'relative', width: 360, height: 720, background: '#1a1a1a', borderRadius: 40, padding: 15, boxShadow: '0 20px 60px rgba(0,0,0,0.5)' };
+  const screen: React.CSSProperties = { position: 'relative', width: '100%', height: '100%', background: '#000', borderRadius: 30, overflow: 'hidden' };
+  const videoStyle: React.CSSProperties = { width: '100%', height: '100%', objectFit: 'cover' };
+  const timeStyle: React.CSSProperties = { position: 'absolute', top: 45, left: 20, color: '#fff', fontSize: 14, fontWeight: 700, zIndex: 5, textShadow: '0 2px 4px rgba(0,0,0,0.5)' };
+  const statusStyle: React.CSSProperties = { position: 'absolute', top: 45, right: 20, display: 'flex', gap: 8, zIndex: 5 };
+  const iconStyle: React.CSSProperties = { color: '#fff', fontSize: 14, textShadow: '0 2px 4px rgba(0,0,0,0.5)' };
+  const homeIndicator: React.CSSProperties = { position: 'absolute', bottom: 10, left: '50%', transform: 'translateX(-50%)', width: 120, height: 4, background: 'rgba(255,255,255,0.5)', borderRadius: 2, zIndex: 5 };
+  return (
+    <div className="mx-auto">
+      <div style={container}>
+        <div style={screen}>
+          <video ref={videoRef} style={videoStyle} autoPlay loop muted playsInline src={bankaiVideo}></video>
+          <div style={timeStyle}>{time}</div>
+          <div style={statusStyle}><span style={iconStyle}>📶</span><span style={iconStyle}>🔋</span></div>
+          <div style={homeIndicator}></div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState('basic');
+  const [selectedPlan] = useState('basic');
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -354,6 +385,15 @@ function App() {
     setInputMessage(quickMessages[action] || '');
   };
 
+  useEffect(() => {
+    void messages;
+    void isTyping;
+    void demoMessages;
+    void demoIsTyping;
+    void sendMessage;
+    void handleQuickAction;
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -377,7 +417,7 @@ function App() {
             <div className="hidden md:flex items-center space-x-4">
               <button className="text-slate-600 hover:text-slate-800 transition-colors">Login</button>
               <button className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors">
-                Teste Grátis
+                Começar Agora
               </button>
             </div>
 
@@ -399,7 +439,7 @@ function App() {
                 <a href="#faq" className="block text-slate-600">FAQ</a>
                 <button className="w-full text-left text-slate-600">Login</button>
                 <button className="w-full bg-orange-500 text-white px-6 py-2 rounded-lg">
-                  Teste Grátis
+                  Começar Agora
                 </button>
               </div>
             </div>
@@ -420,7 +460,7 @@ function App() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <button className="bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-all transform hover:scale-105 flex items-center justify-center">
-                  Comece seu teste grátis de 3 dias
+                  Comece agora mesmo
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </button>
                 <button className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-slate-800 transition-all">
@@ -442,7 +482,7 @@ function App() {
                 </div>
               </div>
             </div>
-
+            
           </div>
         </div>
       </section>
@@ -465,8 +505,9 @@ function App() {
               </div>
               
               <p className="text-xl text-gray-700 mb-8 leading-relaxed">
-                Experimente como é simples: envie uma mensagem e tenha sua despesa ou receita 
-                registrada automaticamente. Sem formulários, sem complicação.
+                No vídeo ao lado, veja como é simples: envie uma mensagem com o produto que
+                você vendeu e o VoxCash Agente identifica produto, quantidade e valor, 
+                registrando a venda direto no seu dashboard. Sem formulários, sem complicação.
               </p>
 
               <div className="space-y-6">
@@ -475,9 +516,9 @@ function App() {
                     <span className="text-orange-600 font-bold text-lg">1</span>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-slate-800 mb-2">Envie uma mensagem</h3>
+                    <h3 className="text-lg font-semibold text-slate-800 mb-2">Envie a imagem do produto</h3>
                     <p className="text-gray-600">
-                      Basta enviar uma mensagem direta para o VoxCash Agente detalhando sua transação.
+                      Basta enviar a foto do produto — o Agente já reconhece automaticamente.
                     </p>
                   </div>
                 </div>
@@ -489,7 +530,7 @@ function App() {
                   <div>
                     <h3 className="text-lg font-semibold text-slate-800 mb-2">Processamento instantâneo</h3>
                     <p className="text-gray-600">
-                      O Agente identifica automaticamente o tipo, valor e categoria da transação.
+                      O Agente reconhece o produto, extrai quantidade e valor e classifica a venda.
                     </p>
                   </div>
                 </div>
@@ -501,7 +542,7 @@ function App() {
                   <div>
                     <h3 className="text-lg font-semibold text-slate-800 mb-2">Registro automático</h3>
                     <p className="text-gray-600">
-                      A transação é registrada no sistema e já aparece no seu dashboard e relatórios.
+                      A venda aparece automaticamente no seu dashboard e relatórios — como mostrado no vídeo.
                     </p>
                   </div>
                 </div>
@@ -516,232 +557,16 @@ function App() {
             </div>
 
             <div className="relative">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto px-4">
-                {/* Chat Interativo */}
-                <div className="bg-white rounded-2xl shadow-lg overflow-hidden max-w-sm mx-auto w-full h-fit">
-                  {/* WhatsApp Header */}
-                  <div className="bg-green-600 px-3 py-2 flex items-center">
-                    <div className="flex items-center">
-                      <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-cyan-500 rounded-full flex items-center justify-center mr-2">
-                        <Users className="h-4 w-4 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-white font-medium text-xs">VoxCash Agente</h3>
-                        <div className="flex items-center">
-                          <div className="w-1.5 h-1.5 bg-green-300 rounded-full mr-1"></div>
-                          <span className="text-green-100 text-xs">online</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="ml-auto">
-                      <span className="text-green-100 text-xs font-medium">Interativo</span>
-                    </div>
-                  </div>
-
-                {/* WhatsApp Messages */}
-                <div className="bg-gray-50 p-3 space-y-2 h-64 overflow-y-auto" id="messages-container">
-                  {messages.map((message) => (
-                    <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'items-start'}`}>
-                      <div className={`p-2 rounded-xl shadow-sm max-w-[180px] ${
-                        message.type === 'user' 
-                          ? 'bg-green-500 rounded-tr-md' 
-                          : 'bg-white rounded-tl-md'
-                      }`}>
-                        <p className={`text-xs ${
-                          message.type === 'user' ? 'text-white font-medium' : 'text-gray-800'
-                        }`} style={{ whiteSpace: 'pre-line' }}>
-                          {message.text}
-                        </p>
-                        <div className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-end'} mt-1`}>
-                          <span className={`text-xs ${
-                            message.type === 'user' ? 'text-green-100' : 'text-gray-400'
-                          }`}>
-                            {message.time} {message.type === 'user' ? '✓✓' : ''}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                  
-                  {/* Typing indicator */}
-                   {isTyping && (
-                     <div className="flex items-start">
-                       <div className="bg-white p-3 rounded-2xl rounded-tl-md shadow-sm">
-                         <div className="flex space-x-1">
-                           <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                           <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                           <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                         </div>
-                       </div>
-                     </div>
-                   )}
-
-                 </div>
-
-                {/* WhatsApp Input */}
-                <div className="bg-white border-t border-gray-200 p-2">
-                  <div className="flex items-center bg-gray-100 rounded-full px-3 py-1.5">
-                    <input 
-                      type="text" 
-                      placeholder="Digite uma mensagem..." 
-                      className="flex-1 bg-transparent text-xs text-gray-700 placeholder-gray-500 outline-none"
-                      value={inputMessage}
-                      onChange={(e) => setInputMessage(e.target.value)}
-                      onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-                      disabled={isTyping}
-                    />
-                    <button 
-                      className="ml-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors disabled:opacity-50"
-                      onClick={sendMessage}
-                      disabled={isTyping || !inputMessage.trim()}
-                    >
-                      <ArrowRight className="h-3 w-3 text-white" />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Quick Actions */}
-                <div className="bg-gray-50 px-2 py-2 border-t border-gray-200">
-                  <div className="grid grid-cols-2 gap-1 text-xs">
-                    <button 
-                      className="bg-orange-500 text-white py-1.5 px-2 rounded-md font-medium hover:bg-orange-600 transition-colors disabled:opacity-50"
-                      onClick={() => handleQuickAction('despesa')}
-                      disabled={isTyping}
-                    >
-                      💰 Despesa
-                    </button>
-                    <button 
-                      className="bg-cyan-500 text-white py-1.5 px-2 rounded-md font-medium hover:bg-cyan-600 transition-colors disabled:opacity-50"
-                      onClick={() => handleQuickAction('receita')}
-                      disabled={isTyping}
-                    >
-                      💵 Receita
-                    </button>
-                    <button 
-                      className="bg-blue-500 text-white py-1.5 px-2 rounded-md font-medium hover:bg-blue-600 transition-colors disabled:opacity-50"
-                      onClick={() => handleQuickAction('resumo')}
-                      disabled={isTyping}
-                    >
-                      📊 Resumo
-                    </button>
-                    <button 
-                      className="bg-purple-500 text-white py-1.5 px-2 rounded-md font-medium hover:bg-purple-600 transition-colors disabled:opacity-50"
-                      onClick={() => handleQuickAction('despesas')}
-                      disabled={isTyping}
-                    >
-                      📝 Despesas
-                    </button>
-                    <button 
-                      className="bg-green-500 text-white py-1.5 px-2 rounded-md font-medium hover:bg-green-600 transition-colors disabled:opacity-50"
-                      onClick={() => handleQuickAction('receitas')}
-                      disabled={isTyping}
-                    >
-                      💰 Receitas
-                    </button>
-                    <button 
-                      className="bg-gray-500 text-white py-1.5 px-2 rounded-md font-medium hover:bg-gray-600 transition-colors disabled:opacity-50"
-                      onClick={() => handleQuickAction('ajuda')}
-                      disabled={isTyping}
-                    >
-                      ❓ Ajuda
-                    </button>
-                  </div>
-                </div>
-                </div>
-
-                {/* Chat de Demonstração */}
-                <div className="bg-white rounded-2xl shadow-lg overflow-hidden max-w-sm mx-auto w-full h-fit">
-                  {/* WhatsApp Header */}
-                  <div className="bg-blue-600 px-3 py-2 flex items-center">
-                    <div className="flex items-center">
-                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mr-2">
-                        <Users className="h-4 w-4 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-white font-medium text-xs">VoxCash Demo</h3>
-                        <div className="flex items-center">
-                          <div className="w-1.5 h-1.5 bg-blue-300 rounded-full mr-1"></div>
-                          <span className="text-blue-100 text-xs">demonstração</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="ml-auto">
-                      <span className="text-blue-100 text-xs font-medium">Automático</span>
-                    </div>
-                  </div>
-
-                  {/* Demo Messages */}
-                  <div className="h-64 overflow-y-auto p-3 bg-gray-50 space-y-2">
-                    {demoMessages.map((message) => (
-                      <div key={message.id} className={`${message.type === 'user' ? 'text-right' : 'text-left'}`}>
-                        <div className={`inline-block max-w-[180px] p-2 rounded-xl ${
-                          message.type === 'user' 
-                            ? 'bg-blue-500 text-white' 
-                            : 'bg-white text-gray-800 shadow-sm'
-                        }`}>
-                          <p className="text-xs whitespace-pre-line">{message.text}</p>
-                          <p className={`text-xs mt-1 ${
-                            message.type === 'user' ? 'text-blue-100' : 'text-gray-500'
-                          }`}>
-                            {message.time}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                    
-                    {demoIsTyping && (
-                      <div className="text-left">
-                        <div className="inline-block bg-white p-2 rounded-xl shadow-sm">
-                          <div className="flex space-x-1">
-                            <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></div>
-                            <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                            <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                    
-
-                  </div>
-
-                  {/* Demo Input (disabled) */}
-                  <div className="bg-white px-3 py-2 border-t border-gray-200">
-                    <div className="flex items-center">
-                      <input 
-                        type="text" 
-                        placeholder="Demo automática..."
-                        className="flex-1 border border-gray-300 rounded-full px-3 py-1.5 text-xs bg-gray-100"
-                        disabled
-                      />
-                      <button 
-                        className="ml-2 w-7 h-7 bg-gray-400 rounded-full flex items-center justify-center"
-                        disabled
-                      >
-                        <ArrowRight className="h-3 w-3 text-white" />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Demo Status */}
-                  <div className="bg-blue-50 px-3 py-1.5 border-t border-blue-200">
-                    <p className="text-xs text-blue-600 text-center font-medium">
-                      🤖 Demo automática em ação!
-                    </p>
-                  </div>
+              <div className="flex justify-center max-w-4xl mx-auto px-4">
+                <div className="py-6">
+                  <PhoneDemo />
                 </div>
               </div>
 
-              {/* WhatsApp floating button */}
-              <div className="absolute -bottom-4 -right-4 lg:-right-8">
-                <div className="bg-green-500 w-16 h-16 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 transition-colors cursor-pointer">
-                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
-                  </svg>
-                  </div>
-                </div>
-              </div>
+              
             </div>
           </div>
+        </div>
       </section>
 
       {/* Dashboard Preview Section */}
@@ -991,50 +816,38 @@ function App() {
               Planos que se adaptam ao seu crescimento
             </h2>
             <p className="text-xl text-gray-600">
-              Comece grátis por 3 dias, depois escolha o plano ideal
+              Escolha o plano ideal para suas necessidades
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {/* Teste Grátis */}
-            <div className={`bg-gradient-to-br from-green-50 to-emerald-50 border-2 rounded-2xl p-8 hover:shadow-lg transition-all ${selectedPlan === 'trial' ? 'border-green-500 shadow-lg' : 'border-green-200'}`}>
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Plano Teste (5 dias) */}
+            <div className="bg-white border-2 rounded-2xl p-8 hover:shadow-lg transition-all border-gray-200">
               <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-green-800 mb-2">Teste Grátis</h3>
-                <div className="text-4xl font-bold text-green-800 mb-2">
-                  R$ 0<span className="text-lg text-green-600">,00</span>
+                <h3 className="text-2xl font-bold text-slate-800 mb-2">Plano Teste (5 dias)</h3>
+                <div className="text-4xl font-bold text-slate-800 mb-2">
+                  R$ 0<span className="text-lg text-gray-600">/5 dias</span>
                 </div>
-                <p className="text-green-700">3 dias para experimentar</p>
+                <p className="text-gray-600">Teste completo sem compromisso</p>
               </div>
 
               <ul className="space-y-4 mb-8">
                 <li className="flex items-center">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  <span className="text-slate-700">Acesso completo por 3 dias</span>
+                  <span className="text-slate-700">Acesso a todas as funcionalidades</span>
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  <span className="text-slate-700">Todas as funcionalidades</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  <span className="text-slate-700">Sem cartão de crédito</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  <span className="text-slate-700">Cancele quando quiser</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  <span className="text-slate-700">Suporte incluído</span>
+                  <span className="text-slate-700">Suporte durante o período de teste</span>
                 </li>
               </ul>
 
-              <button 
-                onClick={() => setSelectedPlan('trial')}
-                className="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors"
+              <a 
+                href="#trial"
+                className="w-full bg-slate-800 text-white py-3 rounded-lg font-semibold hover:bg-slate-900 transition-colors block text-center"
               >
-                Começar Teste Grátis
-              </button>
+                Experimentar por 5 dias
+              </a>
             </div>
 
             {/* Plano Básico */}
@@ -1070,12 +883,14 @@ function App() {
                 </li>
               </ul>
 
-              <button 
-                onClick={() => setSelectedPlan('basic')}
-                className="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors"
+              <a 
+                href="https://pay.cakto.com.br/6cq7seh_634092"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors block text-center"
               >
                 Escolher Básico
-              </button>
+              </a>
             </div>
 
             {/* Plano Premium */}
@@ -1121,13 +936,16 @@ function App() {
                 </li>
               </ul>
 
-              <button 
-                onClick={() => setSelectedPlan('premium')}
-                className="w-full bg-cyan-500 text-white py-3 rounded-lg font-semibold hover:bg-cyan-600 transition-colors"
+              <a 
+                href="https://pay.cakto.com.br/tbbbzbh"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full bg-cyan-500 text-white py-3 rounded-lg font-semibold hover:bg-cyan-600 transition-colors block text-center"
               >
                 Escolher Premium
-              </button>
+              </a>
             </div>
+            
           </div>
 
 
@@ -1225,11 +1043,11 @@ function App() {
           <div className="space-y-6">
             <div className="border border-gray-200 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-slate-800 mb-3">
-                Como funciona o teste grátis de 3 dias?
+                Como funciona a assinatura?
               </h3>
               <p className="text-gray-600">
-                Você tem acesso completo a todas as funcionalidades do VoxCash por 3 dias sem custo algum. 
-                Não cobramos cartão de crédito no cadastro e você pode cancelar a qualquer momento.
+                Você escolhe o plano que melhor se adapta às suas necessidades e tem acesso completo a todas as funcionalidades. 
+                Você pode cancelar a qualquer momento.
               </p>
             </div>
 
@@ -1298,7 +1116,7 @@ function App() {
           
           <div className="bg-white rounded-2xl p-8 shadow-2xl max-w-md mx-auto">
             <h3 className="text-2xl font-bold text-slate-800 mb-6">
-              Comece Agora - É Grátis!
+              Comece Agora!
             </h3>
             <form className="space-y-4">
               <input 
@@ -1320,7 +1138,7 @@ function App() {
                 type="submit"
                 className="w-full bg-orange-500 text-white py-4 rounded-lg font-bold text-lg hover:bg-orange-600 transition-colors"
               >
-                Iniciar Teste Grátis de 3 Dias
+                Escolher Meu Plano
               </button>
             </form>
             <p className="text-gray-600 text-sm mt-4">
@@ -1387,7 +1205,14 @@ function App() {
             </div>
           </div>
         </div>
-      </footer>
+  </footer>
+      <div className="fixed bottom-6 right-6 z-50">
+        <div className="bg-green-500 w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 transition-colors cursor-pointer">
+          <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
