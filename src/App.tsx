@@ -32,26 +32,15 @@ import bankaiVideo from '../video/BANKAI.mp4';
 
 const PhoneDemo: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [time, setTime] = useState(new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }));
-  useEffect(() => {
-    const update = () => setTime(new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }));
-    const interval = setInterval(update, 1000);
-    return () => clearInterval(interval);
-  }, []);
   const container: React.CSSProperties = { position: 'relative', width: '100%', maxWidth: 360, aspectRatio: '9 / 19.5', background: '#1a1a1a', borderRadius: 40, padding: 15, boxShadow: '0 20px 60px rgba(0,0,0,0.5)', margin: '0 auto' };
   const screen: React.CSSProperties = { position: 'relative', width: '100%', height: '100%', background: '#000', borderRadius: 30, overflow: 'hidden' };
   const videoStyle: React.CSSProperties = { width: '100%', height: '100%', objectFit: 'cover' };
-  const timeStyle: React.CSSProperties = { position: 'absolute', top: 45, left: 20, color: '#fff', fontSize: 14, fontWeight: 700, zIndex: 5, textShadow: '0 2px 4px rgba(0,0,0,0.5)' };
-  const statusStyle: React.CSSProperties = { position: 'absolute', top: 45, right: 20, display: 'flex', gap: 8, zIndex: 5 };
-  const iconStyle: React.CSSProperties = { color: '#fff', fontSize: 14, textShadow: '0 2px 4px rgba(0,0,0,0.5)' };
   const homeIndicator: React.CSSProperties = { position: 'absolute', bottom: 10, left: '50%', transform: 'translateX(-50%)', width: 120, height: 4, background: 'rgba(255,255,255,0.5)', borderRadius: 2, zIndex: 5 };
   return (
     <div className="mx-auto">
       <div style={container}>
         <div style={screen}>
           <video ref={videoRef} style={videoStyle} autoPlay loop muted playsInline src={bankaiVideo}></video>
-          <div style={timeStyle}>{time}</div>
-          <div style={statusStyle}><span style={iconStyle}>📶</span><span style={iconStyle}>🔋</span></div>
           <div style={homeIndicator}></div>
         </div>
       </div>
