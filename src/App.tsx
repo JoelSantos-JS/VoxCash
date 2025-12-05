@@ -416,7 +416,14 @@ function App() {
             </nav>
 
             <div className="hidden md:flex items-center space-x-4">
-              <button className="text-slate-600 hover:text-slate-800 transition-colors">Login</button>
+              <a 
+                href="https://app.voxcash.com.br/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-slate-600 hover:text-slate-800 transition-colors"
+              >
+                Login
+              </a>
               <a 
                 href="https://pay.cakto.com.br/6cq7seh_634092"
                 target="_blank"
@@ -443,7 +450,14 @@ function App() {
                     <a href="#pricing" className="block text-slate-600">Preços</a>
                     <a href="#testimonials" className="block text-slate-600">Depoimentos</a>
                     <a href="#faq" className="block text-slate-600">FAQ</a>
-                    <button className="w-full text-left text-slate-600">Login</button>
+                    <a 
+                      href="https://app.voxcash.com.br/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block text-slate-600"
+                    >
+                      Login
+                    </a>
                     <a 
                       href="https://pay.cakto.com.br/6cq7seh_634092"
                       target="_blank"
@@ -859,7 +873,9 @@ function App() {
               </ul>
 
               <a 
-                href="#trial"
+                href="https://app.voxcash.com.br/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full bg-slate-800 text-white py-3 rounded-lg font-semibold hover:bg-slate-900 transition-colors block text-center"
               >
                 Experimentar por 5 dias
